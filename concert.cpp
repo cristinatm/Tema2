@@ -9,7 +9,7 @@ concert::concert(int pret, bool bratara_food, int zona) :
 void concert::Postpone(){
     //se schimba si zona/scena
     zona -= 10;
-    std::cout << "inchis\n";
+    std::cout << "amanat\n";
 }
 
 void concert::reStart(){
@@ -20,6 +20,9 @@ std::ostream &operator << (std::ostream &os, const concert &c){
     return os;
 }
 
+void concert::setPret(int p){
+    this->pret = p;
+}
 
 
 

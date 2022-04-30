@@ -2,8 +2,7 @@
 #include <fstream>
 #include <string>
 #include "festival.h"
-//#include "concert_artist.h"
-//#include "concert.h"
+#include "concert_artist.h"
 #include "user.h"
 
 
@@ -12,10 +11,12 @@ void postp(int nr){
     f->Postpone1(nr);
 }
 
-
 int main(){
     user u;
 	auto f = festival::get_festival();
+    concert_artist c("eu", 15, true);
+    c.setPret(175);
+
     std::ifstream fin("festival.txt");
     fin >> *f;
     f->read();
@@ -24,7 +25,7 @@ int main(){
     f->AddSong(2, "lights out!");
     std::cin >> u;
     u.Quest();
-    f->Start();
+    f->draw();
     festival::QuestA();
     return 0;
 }

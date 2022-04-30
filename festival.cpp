@@ -11,7 +11,6 @@ festival* festival::f = nullptr;
 festival::festival() : nume("festival 2019"), locatie("elvetia"), oameni(789){
 }
 festival::~festival(){
-	//sterg pointerii alocati dinamic
 	for(int i = 0; i < nr_concert; ++i){
 		delete p[i];
 		p[i] = nullptr;
@@ -29,7 +28,6 @@ void festival::InitPath(){
 	imagini[1][4] = "photos/festival5.jpeg";
 	imagini[1][5] = "photos/festival6.jpeg";
 	imagini[1][6] = "photos/festival6.jpeg";
-	
 
 	imagini[2][0] = "photos/food1.jpeg";
 	imagini[2][1] = "photos/food2.jpeg";
@@ -38,22 +36,6 @@ void festival::InitPath(){
 	imagini[2][4] = "photos/food5.jpeg";
 	imagini[2][5] = "photos/food6.jpeg";
 	imagini[2][6] = "photos/food7.jpeg";
-}
-
-void festival::read(){
-	std::string song_name;
-
-	std::ifstream fin("concert.txt");
-	for (int i = 0; i < nr_concert - 1; ++i){
-        auto *con = new concert_artist;
-		fin >> *con;
-		p.push_back(con);
-	}
-
-
-    while (fin >> nr_concert >> song_name)
-		this->AddSong(nr_concert, song_name);
-
 }
 
 
@@ -78,7 +60,6 @@ std::istream &operator >> (std::istream &in, festival &f){
 	
 	return in;
 }
-
 
 
 //----------------------------------------------------------
@@ -113,16 +94,29 @@ void festival::QuestA(){
     }
 }
 
+void festival::read(){
+    std::string song_name;
+    std::ifstream fin("concert.txt");
+    for (int i = 0; i < nr_concert - 1; ++i){
+        auto *con = new concert_artist;
+        fin >> *con;
+        p.push_back(con);
+    }
 
+    while (fin >> nr_concert >> song_name)
+        this->AddSong(nr_concert, song_name);
+
+}
 //-----------------------------------------------------------------
 void festival::AddSong(int nr_concert_, const std::string &name){
     auto *concerta = dynamic_cast<concert_artist*>(p[nr_concert_]);
     concerta->piese.emplace_back(name);
 }
 
-void festival::Start(){
-    int first = 0;
-	int nr = 0;
+void festival::draw(){
+    int first = 0, nr = 0, maxt = 0;
+    std::string day, result;
+    day = "";
 	festival::InitPath();
 
 	sf::RenderWindow window(sf::VideoMode(1024, 622), "2019 FESTIVAL", sf::Style::Default);
@@ -131,30 +125,23 @@ void festival::Start(){
 	sf::Font font;
 	if (!font.loadFromFile("times.ttf")){ std::cout << "Can't find the font file" << std::endl; }
 
-	sf::Texture exitButton1;
-	sf::Sprite exitButtonImage1;
-	if (!exitButton1.loadFromFile("photos/concert.png"))
+	sf::Texture button1, button2, button3;
+	sf::Sprite bi1, bi2, bi3;
+	if (!button1.loadFromFile("photos/concert.png"))
 		std::cout << "Can't find the image" << std::endl;
-	exitButtonImage1.setPosition(100.0f, 300.0f);
+	bi1.setPosition(100.0f, 300.0f);
+	bi1.setTexture(button1);
 
-	exitButtonImage1.setTexture(exitButton1);
+	button2.loadFromFile("photos/restaurant.png");
+	bi2.setPosition(400.0f, 300.0f);
+	bi2.setTexture(button2);
 
+	button3.loadFromFile("photos/bronare.png");
+	bi3.setPosition(700.0f, 300.0f);
+	bi3.setTexture(button3);
 
-	sf::Texture exitButton2;
-	sf::Sprite exitButtonImage2;
-	exitButton2.loadFromFile("photos/restaurant.png");
-	exitButtonImage2.setPosition(400.0f, 300.0f);
-	exitButtonImage2.setTexture(exitButton2);
-
-	sf::Texture exitButton3;
-	sf::Sprite exitButtonImage3;
-	exitButton3.loadFromFile("photos/bronare.png");
-	exitButtonImage3.setPosition(700.0f, 300.0f);
-	exitButtonImage3.setTexture(exitButton3);
-
-
-	sf::Texture before, next, options, background, goconcert, gorest, gobronare , day1, day2, day3;
-	sf::Sprite b1, n1, o1, back1, gc1, gr1, gb1, d1, d2, d3;
+	sf::Texture before, next, options, background, goconcert, gorest, gobronare , day1, day2, day3, unu;
+	sf::Sprite b1, n1, o1, back1, gc1, gr1, gb1, d1, d2, d3, poza1;
 	before.loadFromFile("photos/back.png");
 	b1.setPosition(50.0f, 500.0f);
 	b1.setTexture(before);
@@ -188,20 +175,14 @@ void festival::Start(){
 	gb1.setTexture(gobronare);
 	gb1.setPosition(660.0f, 200.0f);
 
-	sf::Text startText;
+	sf::Text startText, nume1, book, book1;
 	startText.setFont(font);
 	startText.setStyle(sf::Text::Bold);
-	startText.setString("Preview 2019");
+	startText.setString(nume + " Preview 2019");
 	startText.setFillColor(sf::Color::White);
 	startText.setCharacterSize(64);
-	startText.setPosition(300.0f, 100.0f);
+	startText.setPosition(220.0f, 100.0f);
 
-    std::string day;
-    day = "";
-    int maxt = 0;
-
-    sf::Text nume1, book, book1;
-    std::string result;
     std::ifstream fin("unu.txt");
     fin >> result;
     nume1.setFont(font);
@@ -218,9 +199,6 @@ void festival::Start(){
     book.setCharacterSize(37);
     book.setPosition(100.0f, 170.0f);
 
-	sf::Texture unu;
-	sf::Sprite poza1;
-
     book1.setStyle(sf::Text::Bold);
     book1.setFont(font);
     book1.setFillColor(sf::Color(0, 199, 127));
@@ -228,170 +206,136 @@ void festival::Start(){
     book1.setPosition(50.0f, 400.0f);
 
     std::ofstream fo("quest.txt", std::ios::app);
-    // sf::Clock clock;
-//    sf::Time time= clock.getElapsedTime();
-//  sf::Time t1 = sf::seconds(3.0);
-
-// sf::View view = window.getDefaultView();
-// view.setSize(0.0f, 0.0f);
 
   	while (window.isOpen()){
 		sf::Event Event{};
 		while (window.pollEvent(Event)){ 
-//			switch (Event.type){
-				if (Event.type == sf::Event::Closed)
-					window.close();
-
-//                if (Event.type == sf::Event::TextEntered){
-//					unsigned short unicode = Event.text.unicode;
-//					user += static_cast<char>(Event.text.unicode);
-//					std::cout << user << "\n";
-//					if (unicode == 13)
-//						break;
-//				}
-
-                if (Event.type == sf::Event::MouseMoved){
-					sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-					sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-					if (first == 0){      
-						if (exitButtonImage1.getGlobalBounds().contains(mousePosF))
-							exitButtonImage1.setColor(sf::Color(255, 244, 206));
-						else
-							exitButtonImage1.setColor(sf::Color::White);
-
-						if (exitButtonImage2.getGlobalBounds().contains(mousePosF))
-							exitButtonImage2.setColor(sf::Color(255, 244, 206));
-						else
-							exitButtonImage2.setColor(sf::Color::White);
-						
-						if (exitButtonImage3.getGlobalBounds().contains(mousePosF))
-							exitButtonImage3.setColor(sf::Color(255, 244, 206));
-						else
-							exitButtonImage3.setColor(sf::Color::White);
-					}
-				}
-
-                if (Event.type == sf::Event::MouseButtonPressed) {
-					sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-					sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-					if (first == 0){
-						if (exitButtonImage1.getGlobalBounds().contains(mousePosF)){
-							nr = 0;
-							first = 1;
-							unu.loadFromFile(imagini[first][0]);
-							poza1.setPosition(250.0f, 0.0f);
-							poza1.setTexture(unu);
-						} else if (exitButtonImage2.getGlobalBounds().contains(mousePosF)){
-							first = 2;
-							unu.loadFromFile(imagini[first][0]);
-							poza1.setPosition(250.0f, 0.0f);
-							poza1.setTexture(unu);
-							nr = 0;
-						} else if (exitButtonImage3.getGlobalBounds().contains(mousePosF)){
-							first = 3;
-							nr = 7;
-
-						}
-					} else if (nr < 6 && first != 3){
-						if (b1.getGlobalBounds().contains(mousePosF)){
-							if (nr > 0){
-								nr--;
-								unu.loadFromFile(imagini[first][nr]);
-								poza1.setPosition(250.0f, 0.0f);
-								poza1.setTexture(unu);
-							} else if (nr == 0){
-								window.close();
-							}
-						} else if (n1.getGlobalBounds().contains(mousePosF)){
-							nr++;
-							unu.loadFromFile(imagini[first][nr]);
-							poza1.setPosition(250.0f, 0.0f);
-							poza1.setTexture(unu);
-							if (nr == 6){
-								if (first == 2)
-									goconcert.loadFromFile("photos/goconcert.png");
-							
-								if(first == 1)
-									goconcert.loadFromFile("photos/gorest.png");
-								gc1.setTexture(goconcert);
-							}
-						}
-					} else if (nr == 6){
-						if ((first == 2) && gc1.getGlobalBounds().contains(mousePosF)){
-							nr = 0;
-							first = 1;
-							unu.loadFromFile(imagini[first][0]);
-							poza1.setPosition(250.0f, 0.0f);
-							poza1.setTexture(unu);
-						} else
-						if ((first == 1) && gc1.getGlobalBounds().contains(mousePosF)){
-							first = 2;
-							unu.loadFromFile(imagini[first][0]);
-							poza1.setPosition(250.0f, 0.0f);
-							poza1.setTexture(unu);
-							nr = 0;
-						} else
-						if (gb1.getGlobalBounds().contains(mousePosF)){
-							first = 3;
-							nr = 7;
-                        }
-					} else if (nr == 7){
-                        if (d1.getGlobalBounds().contains(mousePosF)){
-                            day = "day 1";
-                            maxt++;
-
-                            if (maxt == 2) {
-                                fo.close();
-                                window.close();
-                                std::cout << "You can not book more than 1 ticket.\n";
-
-                            }
-                            fo << day;
-                            oameni--;
-
-                            book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
-
-                        } else if (d2.getGlobalBounds().contains(mousePosF)){
-                            day = "day 2";
-                            maxt++;
-                            if (maxt == 2) {
-                                fo.close();
-                                window.close();
-                                std::cout << "You can not book more than 1 ticket.\n";
-
-                            }
-                            fo << day;
-
-                            oameni--;
-                            book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
-
-                        } else if (d3.getGlobalBounds().contains(mousePosF)){
-                            day = "day 3";
-                            maxt++;
-                            if (maxt == 2) {
-                                fo.close();
-                                window.close();
-                                std::cout << "You can not book more than 1 ticket.\n";
-                            }
-                            fo << day;
-                            oameni--;
-
-                            book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
-
-                        }
-                        fo << "\n";
-
-
+            if (Event.type == sf::Event::Closed)
+                window.close();
+            if (Event.type == sf::Event::MouseMoved){
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+                if (first == 0){
+                    if (bi1.getGlobalBounds().contains(mousePosF))
+                        bi1.setColor(sf::Color(255, 244, 206));
+                    else
+                        bi1.setColor(sf::Color::White);
+                    if (bi2.getGlobalBounds().contains(mousePosF))
+                        bi2.setColor(sf::Color(255, 244, 206));
+                    else
+                        bi2.setColor(sf::Color::White);
+                    if (bi3.getGlobalBounds().contains(mousePosF))
+                        bi3.setColor(sf::Color(255, 244, 206));
+                    else
+                        bi3.setColor(sf::Color::White);
+                }
+            }
+            if (Event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+                if (first == 0){
+                    if (bi1.getGlobalBounds().contains(mousePosF)){
+                        nr = 0;
+                        first = 1;
+                        unu.loadFromFile(imagini[first][0]);
+                        poza1.setPosition(250.0f, 0.0f);
+                        poza1.setTexture(unu);
+                    } else if (bi2.getGlobalBounds().contains(mousePosF)){
+                        first = 2;
+                        unu.loadFromFile(imagini[first][0]);
+                        poza1.setPosition(250.0f, 0.0f);
+                        poza1.setTexture(unu);
+                        nr = 0;
+                    } else if (bi3.getGlobalBounds().contains(mousePosF)){
+                        first = 3;
+                        nr = 7;
                     }
-				}
+                } else if (nr < 6 && first != 3){
+                    if (b1.getGlobalBounds().contains(mousePosF)){
+                        if (nr > 0){
+                            nr--;
+                            unu.loadFromFile(imagini[first][nr]);
+                            poza1.setPosition(250.0f, 0.0f);
+                            poza1.setTexture(unu);
+                        } else if (nr == 0)
+                            window.close();
+                    } else if (n1.getGlobalBounds().contains(mousePosF)){
+                        nr++;
+                        unu.loadFromFile(imagini[first][nr]);
+                        poza1.setPosition(250.0f, 0.0f);
+                        poza1.setTexture(unu);
+                        if (nr == 6){
+                            if (first == 2)
+                                goconcert.loadFromFile("photos/goconcert.png");
+                            if(first == 1)
+                                goconcert.loadFromFile("photos/gorest.png");
+                            gc1.setTexture(goconcert);
+                        }
+                    }
+                } else if (nr == 6){
+                    if ((first == 2) && gc1.getGlobalBounds().contains(mousePosF)){
+                        nr = 0;
+                        first = 1;
+                        unu.loadFromFile(imagini[first][0]);
+                        poza1.setPosition(250.0f, 0.0f);
+                        poza1.setTexture(unu);
+                    } else
+                    if ((first == 1) && gc1.getGlobalBounds().contains(mousePosF)){
+                        first = 2;
+                        unu.loadFromFile(imagini[first][0]);
+                        poza1.setPosition(250.0f, 0.0f);
+                        poza1.setTexture(unu);
+                        nr = 0;
+                    } else
+                    if (gb1.getGlobalBounds().contains(mousePosF)){
+                        first = 3;
+                        nr = 7;
+                    }
+                } else if (nr == 7){
+                    if (d1.getGlobalBounds().contains(mousePosF)){
+                        day = "day 1";
+                        maxt++;
+                        if (maxt == 2) {
+                            fo.close();
+                            window.close();
+                            std::cout << "You can not book more than 1 ticket.\n";
+                        }
+                        fo << day;
+                        oameni--;
+                        book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
+                    } else if (d2.getGlobalBounds().contains(mousePosF)){
+                        day = "day 2";
+                        maxt++;
+                        if (maxt == 2) {
+                            fo.close();
+                            window.close();
+                            std::cout << "You can not book more than 1 ticket.\n";
+                        }
+                        fo << day;
+                        oameni--;
+                        book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
+                    } else if (d3.getGlobalBounds().contains(mousePosF)){
+                        day = "day 3";
+                        maxt++;
+                        if (maxt == 2) {
+                            fo.close();
+                            window.close();
+                            std::cout << "You can not book more than 1 ticket.\n";
+                        }
+                        fo << day;
+                        oameni--;
+                        book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
+                    }
+                    fo << "\n";
+                }
+            }
     	}
 		window.clear();
-
 		if (first == 0){
 			window.draw(startText);
-			window.draw(exitButtonImage1);
-			window.draw(exitButtonImage2);
-			window.draw(exitButtonImage3);
+			window.draw(bi1);
+			window.draw(bi2);
+			window.draw(bi3);
 		} else if (nr < 6){
 			window.draw(poza1);
 			window.draw(b1);
@@ -401,8 +345,7 @@ void festival::Start(){
 			window.draw(gc1);
 			window.draw(gb1);
 			window.draw(o1);
-		}
-		else if (nr == 7){
+		} else if (nr == 7){
 			window.draw(nume1);
             window.draw(book);
             window.draw(d1);

@@ -17,6 +17,7 @@ class concert_artist : public concert{
 
 public:
     concert_artist();
+    concert_artist(const std::string &artist, double ora, bool acces_culise);
 	~concert_artist() override = default;
     concert_artist(const concert_artist& c);
     concert_artist& operator=(concert_artist&&) = default;

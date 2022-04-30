@@ -6,13 +6,6 @@
 #include <unordered_map>
 #include "concert.h"
 #include "concert_artist.h"
-#include "concert.h"
-#include <vector>
-#include <string>
-#include <memory>
-#include <unordered_map>
-
-static const int no_days=3;
 
 class festival {
 
@@ -21,9 +14,9 @@ private:
 	static festival* f;
     std::string imagini[10][10];
     std::string nume;
-	std::string orar[no_days];
+	std::string orar[3];
     std::string locatie;
-    int prices[no_days]{50, 50, 50};
+    int prices[3]{50, 50, 50};
     int oameni;
 
 	festival();
@@ -38,11 +31,10 @@ public:
     static void QuestA();
     void read();
     void AddSong(int nr_concert, const std::string &nume="anonim");
-    void Start();
+    void draw();
     void InitPath();
 	void Postpone1(int nr);
 	void reStart1(int nr);
-
     friend std::istream &operator >> (std::istream &in, festival &f);
     friend std::ostream &operator <<(std::ostream &out, const festival &f);
 
