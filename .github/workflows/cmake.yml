@@ -1,6 +1,5 @@
 name: C++ CI
 
-
 on:
   push:
     branches: [main] # NOTE: replace/update with appropriate branch name(s)
@@ -197,6 +196,7 @@ jobs:
         if: runner.os == 'Windows' && matrix.cxx == 'g++' && steps.cache-mingw.outputs.cache-hit != 'true'
         run: |
           7z x compiler/winlibs-x86_64-posix-seh-gcc-10.3.0-mingw-w64-9.0.0-r2.7z -ogcc
+          
       - name: Configure CMake (MinGW)
         if: runner.os == 'Windows' && matrix.cxx == 'g++'
         run: |
