@@ -11,7 +11,9 @@ jobs:
   build:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
-
+    permissions:
+      contents: write
+      
     defaults:
       run:
         # Use a bash shell, so we can use the same syntax for environment variable
