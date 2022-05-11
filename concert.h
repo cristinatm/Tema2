@@ -19,7 +19,7 @@ public:
     explicit concert(int pret=50, bool bratara_food=false, int zona=1);
 	virtual ~concert() = default;
 	virtual void Postpone();
-	void reStart();
+	void restart();
     friend std::ostream &operator << (std::ostream &os, const concert &c);
     void setPret(int p);
 };

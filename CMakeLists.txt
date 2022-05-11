@@ -1,11 +1,10 @@
+cmake_minimum_required(VERSION 3.15)
+
 # NOTE: update executable name in .github/workflows/cmake.yml when changing executable name in this file
 # for now, the project name is used as the executable name
-cmake_minimum_required(VERSION 3.23)
 project(oop)
-include_directories(.)
 
 set(CMAKE_CXX_STANDARD 20)
-
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -35,7 +34,7 @@ FetchContent_MakeAvailable(SFML)
 ###############################################################################
 
 # NOTE: update executable name in .github/workflows/cmake.yml when changing name here
-add_executable(${PROJECT_NAME} main.cpp festival.cpp concert.cpp concert_artist.cpp user.cpp)
+add_executable(${PROJECT_NAME} main.cpp user.cpp concert.cpp concert_artist.cpp festival.cpp concert_all.cpp)
 
 ###############################################################################
 

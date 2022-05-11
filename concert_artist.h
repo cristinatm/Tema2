@@ -9,7 +9,7 @@
 
 class concert_artist : public concert{
 
-    std::vector<std::shared_ptr<concert>> chestii;
+    std::vector<std::shared_ptr<concert>> concerte;
     std::string artist;
     double ora{};
     std::vector <std::string> piese;

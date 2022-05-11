@@ -23,24 +23,17 @@ std::istream &operator>>(std::istream &in, user &u) {
 
 	while (true) {
 		in >> email;
-		try {
 			if (email.find('@') >= email.length())
-				throw eroare_mail("Invalid input! Please enter a real email.\n");
+				std::cout <<"Invalid input! Please enter a real email.\n";
 			break;
-		}
-		catch (const std::invalid_argument &err) { std::cout << err.what(); }
-
 	}
 	u.email = email;
 	std::cout << "Please enter your age: ";
     while (true){
         in >> age;
-        try {
             if (age <= 0)
-                throw eroare_age("Invalid input! Your age should be greater than zero.\n");
+                std::cout << "Invalid input! Your age should be greater than zero.\n";
             break;
-        }
-        catch (const eroare &err) { std::cout << err.what(); }
     }
     u.age = age;
 	return in;
@@ -55,15 +48,10 @@ void user::Quest(){
     std::cout << "1) friends.   2) media.  3)family.\n";
     while (true){
         std::cin >> ans;
-
-        try{
-            if (ans != "friends" && ans != "media" && ans != "family")
-                throw std::invalid_argument("Choose one of the options from above.\n");
+        if (ans != "friends" && ans != "media" && ans != "family")
+            std::cout << "Choose one of the options from above.\n";
+        else
             break;
-        }
-        catch (const std::invalid_argument &err){
-            std::cout << err.what();
-        }
     }
     if (age < 16){
         std::cout << "All under 16’s must be accompanied by an adult ticket holder, (parent or guardian) who is over 18 years old.\n";

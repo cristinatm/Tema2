@@ -39,12 +39,12 @@ void festival::InitPath(){
 }
 
 
-void festival::Postpone1(int nr){
+void festival::Postpone_f(int nr){
 	p[nr]->Postpone();
 }
 
-void festival::reStart1(int nr){
-    p[nr]->reStart();
+void festival::restart_f(int nr){
+    p[nr]->restart();
 }
 
 std::ostream &operator <<(std::ostream &out, const festival &f){
@@ -97,7 +97,7 @@ void festival::QuestA(){
 void festival::read(){
     std::string song_name;
     std::ifstream fin("concert.txt");
-    for (int i = 0; i < nr_concert - 1; ++i){
+    for (int i = 0; i < 6; ++i){
         auto *con = new concert_artist;
         fin >> *con;
         p.push_back(con);
@@ -108,10 +108,17 @@ void festival::read(){
 
 }
 //-----------------------------------------------------------------
-void festival::AddSong(int nr_concert_, const std::string &name){
-    auto *concerta = dynamic_cast<concert_artist*>(p[nr_concert_]);
-    concerta->piese.emplace_back(name);
+void festival::AddSong(int nr_artist, const std::string &name){
+    try {
+        auto *concert_a = dynamic_cast<concert_artist*>(p[nr_artist]);
+        concert_a->piese.emplace_back(name);
+    }
+    catch (std::bad_cast &err){
+      std::cout << err.what();
+    }
+
 }
+
 
 void festival::draw(){
     int first = 0, nr = 0, maxt = 0;
@@ -168,7 +175,6 @@ void festival::draw(){
 
 	background.loadFromFile("photos/white.jpg");
 	back1.setTexture(background);
-	
 	gc1.setPosition(145.0f, 200.0f);
 	
 	gobronare.loadFromFile("photos/gobronare.png");
@@ -215,6 +221,7 @@ void festival::draw(){
             if (Event.type == sf::Event::MouseMoved){
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+//                hover pe buton, se schimba culoarea
                 if (first == 0){
                     if (bi1.getGlobalBounds().contains(mousePosF))
                         bi1.setColor(sf::Color(255, 244, 206));
@@ -229,11 +236,13 @@ void festival::draw(){
                     else
                         bi3.setColor(sf::Color::White);
                 }
+
             }
             if (Event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
                 if (first == 0){
+//                    click pe butonul 'concert', 'restaurant' sau 'book'
                     if (bi1.getGlobalBounds().contains(mousePosF)){
                         nr = 0;
                         first = 1;
@@ -251,6 +260,7 @@ void festival::draw(){
                         nr = 7;
                     }
                 } else if (nr < 6 && first != 3){
+//                    back si next la poze + afisarea pozelor
                     if (b1.getGlobalBounds().contains(mousePosF)){
                         if (nr > 0){
                             nr--;
@@ -264,6 +274,7 @@ void festival::draw(){
                         unu.loadFromFile(imagini[first][nr]);
                         poza1.setPosition(250.0f, 0.0f);
                         poza1.setTexture(unu);
+//                        dupa ultima poza apar iar optiunile
                         if (nr == 6){
                             if (first == 2)
                                 goconcert.loadFromFile("photos/goconcert.png");
@@ -273,6 +284,7 @@ void festival::draw(){
                         }
                     }
                 } else if (nr == 6){
+//                    reafisarea pozelor
                     if ((first == 2) && gc1.getGlobalBounds().contains(mousePosF)){
                         nr = 0;
                         first = 1;
@@ -291,31 +303,16 @@ void festival::draw(){
                         first = 3;
                         nr = 7;
                     }
+//                    bronare bilet
                 } else if (nr == 7){
                     if (d1.getGlobalBounds().contains(mousePosF)){
                         day = "day 1";
-                        maxt++;
-                        if (maxt == 2) {
-                            fo.close();
-                            window.close();
-                            std::cout << "You can not book more than 1 ticket.\n";
-                        }
-                        fo << day;
-                        oameni--;
-                        book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
                     } else if (d2.getGlobalBounds().contains(mousePosF)){
                         day = "day 2";
-                        maxt++;
-                        if (maxt == 2) {
-                            fo.close();
-                            window.close();
-                            std::cout << "You can not book more than 1 ticket.\n";
-                        }
-                        fo << day;
-                        oameni--;
-                        book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
                     } else if (d3.getGlobalBounds().contains(mousePosF)){
                         day = "day 3";
+                    }
+                    if ((d1.getGlobalBounds().contains(mousePosF)) || (d2.getGlobalBounds().contains(mousePosF)) || (d3.getGlobalBounds().contains(mousePosF))) {
                         maxt++;
                         if (maxt == 2) {
                             fo.close();
@@ -324,7 +321,9 @@ void festival::draw(){
                         }
                         fo << day;
                         oameni--;
-                        book1.setString("You have successfully booked your ticket on " + day + "!\n" + "There are still " + std::to_string(oameni)+ " tickets available for this concert.");
+                        book1.setString(
+                                "You have successfully booked your ticket!\nThere are still " +
+                                std::to_string(oameni) + " tickets available for this concert.");
                     }
                     fo << "\n";
                 }

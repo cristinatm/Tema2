@@ -1,3 +1,5 @@
+//era un const neinit in constr/ solutie il face ne const/ il initializezi in lista de constr
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -5,23 +7,27 @@
 #include "concert_artist.h"
 #include "user.h"
 
-
 void postp(int nr){
     auto f = festival::get_festival();
-    f->Postpone1(nr);
+    f->Postpone_f(nr);
 }
 
 int main(){
     user u;
 	auto f = festival::get_festival();
-    concert_artist c("eu", 15, true);
-    c.setPret(175);
+    try {
+        concert_artist c("avicii", 15, true);
+        c.setPret(175);
+    }
+    catch (const std::invalid_argument &err){
+        std::cout << err.what();
+    }
 
     std::ifstream fin("festival.txt");
     fin >> *f;
     f->read();
     postp(1);
-    f->reStart1(1);
+    f->restart_f(1);
     f->AddSong(2, "lights out!");
     std::cin >> u;
     u.Quest();

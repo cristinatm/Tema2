@@ -7,16 +7,20 @@ concert::concert(int pret, bool bratara_food, int zona) :
 {}
 
 void concert::Postpone(){
-    //se schimba si zona/scena
-    zona -= 10;
-    std::cout << "amanat\n";
+    //se schimba si zona si ora
+    zona -= 1;
+    if (zona < 0)
+        zona = 1;
+    std::cout << "Concert amanat.\n";
 }
 
-void concert::reStart(){
-    zona += 10;
+void concert::restart(){
+    zona += 1;
+    if (zona > 3)
+        zona = 1;
 }
 std::ostream &operator << (std::ostream &os, const concert &c){
-    os << "Concert: " << c.zona << ". Pret: " << c.pret <<".\n";
+    os << "Nr. Concert: " << c.zona << ". Pret: " << c.pret <<".\n";
     return os;
 }
 

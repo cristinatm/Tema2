@@ -1,15 +1,15 @@
-PinkFloyd 0
-Rihanna 1
-RoyalBlood 3
-Avicii 2
-Adele 2
-AM 4
-1 Nothing
+PinkFloyd 0 1 20
+Rihanna 1 0 21
+RoyalBlood 3 1 22
+Avicii 2 0 19
+Adele 2 1 18
+AM 3 0 17
+0 Nothing
 1 Like
 1 You
 2 story!
 3 Life
 3 RUDE
 4 Addicted
-4 Friends
-4 Enemies:)
+5 Friends
+5 Enemies:)

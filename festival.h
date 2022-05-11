@@ -1,5 +1,6 @@
 #ifndef FESTIVAL_H
 #define FESTIVAL_H
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
 #include <memory>
@@ -30,11 +31,11 @@ public:
 	~festival();
     static void QuestA();
     void read();
-    void AddSong(int nr_concert, const std::string &nume="anonim");
+    void AddSong(int nr_concert, const std::string &nume="all i am");
     void draw();
     void InitPath();
-	void Postpone1(int nr);
-	void reStart1(int nr);
+	void Postpone_f(int nr);
+	void restart_f(int nr);
     friend std::istream &operator >> (std::istream &in, festival &f);
     friend std::ostream &operator <<(std::ostream &out, const festival &f);
 
