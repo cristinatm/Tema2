@@ -1,6 +1,5 @@
 #include "concert.h"
-#include <iostream>
-#include <string>
+
 
 concert::concert(int pret, bool bratara_food, int zona) :
     pret(pret), bratara_food(bratara_food), zona(zona)

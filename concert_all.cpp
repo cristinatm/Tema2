@@ -1,6 +1,5 @@
 #include "concert_all.h"
-#include <iostream>
-#include <string>
+
 
 std::ostream &operator<< (std::ostream &os, const concert_all &c){
     os << "Concert: " << c.nume << ". \nAcces culise: " << c.acces_culise << "\n";

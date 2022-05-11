@@ -1,6 +1,5 @@
 #include "festival.h"
 #include "concert_artist.h"
-#include <vector>
 #include <fstream>
 #include <sstream>
 #include <SFML/Graphics.hpp>
@@ -147,8 +146,8 @@ void festival::draw(){
 	bi3.setPosition(700.0f, 300.0f);
 	bi3.setTexture(button3);
 
-	sf::Texture before, next, options, background, goconcert, gorest, gobronare , day1, day2, day3, unu;
-	sf::Sprite b1, n1, o1, back1, gc1, gr1, gb1, d1, d2, d3, poza1;
+	sf::Texture before, next, options, background, goconcert, gobronare , day1, day2, day3, unu;
+	sf::Sprite b1, n1, o1, back1, gc1, gb1, d1, d2, d3, poza1;
 	before.loadFromFile("photos/back.png");
 	b1.setPosition(50.0f, 500.0f);
 	b1.setTexture(before);

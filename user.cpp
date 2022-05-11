@@ -1,9 +1,6 @@
 #include "user.h"
-#include "eroare.h"
-#include <iostream>
 #include <fstream>
-#include <string>
-#include <utility>
+
 
 
 user::user(std::string lastname, std::string firstname, std::string email, int age) :

@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include "festival.h"
 #include "concert_artist.h"
 #include "user.h"
@@ -16,7 +15,7 @@ int main(){
     user u;
 	auto f = festival::get_festival();
     try {
-        concert_artist c("avicii", 15, true);
+        concert_artist c("avicii", 18, true);
         c.setPret(175);
     }
     catch (const std::invalid_argument &err){

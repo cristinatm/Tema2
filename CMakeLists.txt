@@ -95,6 +95,7 @@ FetchContent_MakeAvailable(SFML)
 sfml_set_custom_stdlib(sfml-system)
 sfml_set_custom_stdlib(sfml-window)
 sfml_set_custom_stdlib(sfml-graphics)
+
 ###############################################################################
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
@@ -110,5 +111,5 @@ target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
 
 # copy binaries to bin folder; these are uploaded as artifacts on each release
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-
+install(DIRECTORY photos DESTINATION bin)
 # install(FILES some_file1.txt some_file2.md DESTINATION bin)
